@@ -43,8 +43,6 @@ class AuthController extends Controller
         ])->withInput();
     }
 
-
-
     public function logout(Request $request)
     {
         Auth::logout();
@@ -53,39 +51,5 @@ class AuthController extends Controller
 
         return redirect()->route('login')->with('success', 'Logout realizado com sucesso.');
     }
-
-
-
-    // public function login(Request $request)
-    // {
-    //     $request->validate([
-    //         'email' => 'required|email',
-    //         'password' => 'required',
-    //     ]);
-
-    //     $user = User::where('email', $request->email)->first();
-
-    //     if (!$user || !Hash::check($request->password, $user->password)) {
-    //         throw ValidationException::withMessages([
-    //             'email' => ['As credenciais fornecidas estão incorretas.'],
-    //         ]);
-    //     }
-        
-    //     $tokenName = $request->device_name ?: 'auth_token';
-        
-    //     $abilities = ['role_user'];
-
-    //     if ($user->role_id == 1) {
-    //         $abilities[] = 'role_admin';
-    //     }
-
-    //     $token = $user->createToken($tokenName, $abilities)->plainTextToken;
-
-    //     return response()->json([
-    //         'token' => $token,
-    //         'user' => $user->only(['id_user', 'username', 'email', 'role_id']),
-    //         'message' => 'Login realizado com sucesso.'
-    //     ]);
-    // }
 
 }

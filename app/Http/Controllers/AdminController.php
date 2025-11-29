@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Jogador;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-
     public function dashboard()
     {
         $jogadores = Jogador::with('user')->get();
@@ -17,16 +17,14 @@ class AdminController extends Controller
 
     public function index()
     {
-        $admin = auth()->user();
         $jogadores = Jogador::with('user')->get();
-        return view('admin.jogadores.index', compact('jogadores'));
+        return view('admin.index', compact('jogadores'));
     }
 
     public function edit($id)
     {
-        $admin = auth()->user();
         $jogador = Jogador::with('user')->findOrFail($id);
-        return view('admin.jogadores.edit', compact('jogador'));
+        return view('admin.edit', compact('jogador'));
     }
 
     public function update(Request $request, $id)
@@ -57,12 +55,12 @@ class AdminController extends Controller
         ];
 
         if (!empty($validacao['senha'])) {
-            $userData['password'] = $validacao['senha'];
+            $userData['password'] = Hash::make($validacao['senha']); 
         }
 
         $user->update($userData);
 
-        return redirect()->route('admin.jogadores.index')->with('success', 'Jogador atualizado com sucesso!');
+        return redirect()->route('admin.index')->with('success', 'Jogador atualizado com sucesso!');
     }
 
     public function destroy($id)
@@ -70,10 +68,10 @@ class AdminController extends Controller
         $jogador = Jogador::findOrFail($id);
         $user = $jogador->user;
 
-        $jogador->delete();
         if ($user) {
             $user->delete();
         }
+        $jogador->delete();
 
         return redirect()->route('admin.jogadores.index')->with('success', 'Jogador apagado com sucesso!');
     }
@@ -100,7 +98,7 @@ class AdminController extends Controller
         ];
 
         if (!empty($validacao['senha'])) {
-            $userData['password'] = $validacao['senha'];
+            $userData['password'] = Hash::make($validacao['senha']);
         }
 
         $admin->update($userData);

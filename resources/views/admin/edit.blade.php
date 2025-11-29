@@ -1,33 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Editar Meus Dados')
+@section('title', 'Editar Jogador')
 
 @section('content')
 <div class="container">
-    <h1>Editar Meus Dados</h1>
+    <h1>Editar Jogador</h1>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    @if($errors->any())
-        <div class="alert alert-error">
-            <ul>
-                @foreach($errors->all() as $erro)
-                    <p>{{ $erro }}</p>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form action="{{ route('jogador.update') }}" method="POST">
+    <form action="{{ route('admin.jogadores.update', $jogador->id_jogador) }}" method="POST">
         @csrf
         @method('PUT')
 
         <label>Apelido:</label>
         <input type="text" name="apelido" value="{{ old('apelido', $jogador->apelido) }}" required>
 
-        <label>Nome completo:</label>
+        <label>Nome:</label>
         <input type="text" name="nome" value="{{ old('nome', $jogador->nome) }}" required>
 
         <label>Data de nascimento:</label>
@@ -39,10 +25,16 @@
         <label>Email:</label>
         <input type="email" name="email" value="{{ old('email', $jogador->user->email) }}" required>
 
-        <label>Senha (deixe em branco para manter):</label>
+        <label>Senha (opcional):</label>
         <input type="password" name="senha">
 
-        <button type="submit">Actualizar</button>
+        <label>Role:</label>
+        <select name="role_id" required>
+            <option value="1" {{ $jogador->user->role_id == 1 ? 'selected' : '' }}>Admin</option>
+            <option value="2" {{ $jogador->user->role_id == 2 ? 'selected' : '' }}>Jogador</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">Salvar</button>
     </form>
 </div>
 @endsection

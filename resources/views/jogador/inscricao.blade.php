@@ -3,18 +3,17 @@
 @section('title', 'Inscrição de Jogador')
 
 @section('content')
-<div class="container">
     <h1>Inscrição de Jogador</h1>
 
-    @if(session('success'))
+    <!-- @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    @endif -->
 
     @if($errors->any())
         <div class="alert alert-error">
             <ul>
                 @foreach($errors->all() as $erro)
-                    <li>{{ $erro }}</li>
+                    <p>{{ $erro }}</p>
                 @endforeach
             </ul>
         </div>
@@ -44,5 +43,4 @@
 
         <button type="submit">Se inscrever</button>
     </form>
-</div>
 @endsection

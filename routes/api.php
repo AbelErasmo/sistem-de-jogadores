@@ -12,15 +12,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('jogadores', JogadorController::class)->except(['create', 'edit']);
 });
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-
-    Route::get('/jogadores', [AdminController::class, 'index'])->name('jogadores.index');
-    Route::get('/jogador/{id}/editar', [AdminController::class, 'edit'])->name('jogador.edit');
-    Route::post('/jogador/{id}/atualizar', [AdminController::class, 'update'])->name('jogador.update');
-    Route::delete('/jogador/{id}', [AdminController::class, 'destroy'])->name('jogador.destroy');
-
-    Route::get('/perfil', [AdminController::class, 'perfil'])->name('perfil');
-    Route::post('/perfil/atualizar', [AdminController::class, 'perfilUpdate'])->name('perfil.update');
+Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->name('api.admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard']);
+    Route::get('/jogadores', [AdminController::class, 'index']);
+    Route::get('/jogadores/{id}', [AdminController::class, 'show']);
+    Route::put('/jogadores/{id}', [AdminController::class, 'update']);
+    Route::delete('/jogadores/{id}', [AdminController::class, 'destroy']);
+    Route::put('/perfil', [AdminController::class, 'perfilUpdate']);
 });

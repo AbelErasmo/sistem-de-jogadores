@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\JogadorController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', );
 
@@ -17,3 +18,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/editar', [JogadorController::class, 'edit'])->name('jogador.editar');
     Route::put('/editar', [JogadorController::class, 'update'])->name('jogador.update');
 });
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::resource('jogadores', AdminController::class)->except(['create', 'store', 'show']);
+    Route::get('/perfil', [AdminController::class, 'perfil'])->name('perfil');
+    Route::put('/perfil', [AdminController::class, 'perfilUpdate'])->name('perfil.update');
+});
+
